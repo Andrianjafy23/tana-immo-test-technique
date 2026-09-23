@@ -24,7 +24,6 @@ router.get("/api/listings", async (req, res) => {
     res.json(enriched);
   } catch (err) {
     console.error("GET /api/listings failed:", err);
-    // Never leak err.message to the client (may expose internal details).
     res.status(500).json({ error: "Erreur serveur, veuillez réessayer" });
   }
 });
@@ -107,7 +106,7 @@ function normalizeCity(rawCity) {
 function normalizePage(rawPage) {
   const page = parseInt(rawPage, 10);
   if (!Number.isInteger(page) || page < 1) return 1;
-  return Math.min(page, 10_000); // cap to avoid an absurd OFFSET
+  return Math.min(page, 10_000);
 }
 
 module.exports = router;
